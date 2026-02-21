@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.0.0"
-agp = "8.4.0"
+agp = "8.13.2"
 compose-bom = "2024.04.01"
 hilt = "2.51"
 room = "2.6.1"
@@ -30,7 +30,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 
 # Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 # Navigation
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
