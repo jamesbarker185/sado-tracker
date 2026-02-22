@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.sadotracker.corecoredomain"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 29
@@ -22,8 +22,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:core-database"))
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.datastore.preferences)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
 }
 

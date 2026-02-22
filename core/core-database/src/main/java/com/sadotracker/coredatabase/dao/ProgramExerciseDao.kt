@@ -14,6 +14,9 @@ interface ProgramExerciseDao {
     @Query("SELECT * FROM program_exercises WHERE program_id = :programId ORDER BY order_index ASC")
     fun getExercisesForProgram(programId: Long): Flow<List<ProgramExerciseEntity>>
 
+    @Query("SELECT * FROM program_exercises WHERE id = :id")
+    suspend fun getById(id: Long): ProgramExerciseEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(programExercises: List<ProgramExerciseEntity>)
 

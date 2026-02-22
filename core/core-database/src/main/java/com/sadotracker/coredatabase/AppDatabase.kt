@@ -2,12 +2,16 @@ package com.sadotracker.coredatabase
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.sadotracker.coredatabase.dao.AchievementDao
 import com.sadotracker.coredatabase.dao.ExerciseDao
+import com.sadotracker.coredatabase.dao.MesocycleDao
 import com.sadotracker.coredatabase.dao.ProgramDao
 import com.sadotracker.coredatabase.dao.ProgramExerciseDao
 import com.sadotracker.coredatabase.dao.SetDao
 import com.sadotracker.coredatabase.dao.WorkoutDao
+import com.sadotracker.coredatabase.entity.AchievementEntity
 import com.sadotracker.coredatabase.entity.ExerciseEntity
+import com.sadotracker.coredatabase.entity.MesocycleEntity
 import com.sadotracker.coredatabase.entity.ProgramEntity
 import com.sadotracker.coredatabase.entity.ProgramExerciseEntity
 import com.sadotracker.coredatabase.entity.RomProfileEntity
@@ -21,9 +25,11 @@ import com.sadotracker.coredatabase.entity.WorkoutEntity
         ProgramExerciseEntity::class,
         WorkoutEntity::class,
         SetEntity::class,
-        RomProfileEntity::class
+        RomProfileEntity::class,
+        MesocycleEntity::class,
+        AchievementEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -32,4 +38,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun programExerciseDao(): ProgramExerciseDao
     abstract fun workoutDao(): WorkoutDao
     abstract fun setDao(): SetDao
+    abstract fun mesocycleDao(): MesocycleDao
+    abstract fun achievementDao(): AchievementDao
 }

@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.sadotracker.featurefeatureprograms"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 29
@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(project(":core:core-ui"))
     implementation(project(":core:core-domain"))
+    implementation(project(":core:core-database"))
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

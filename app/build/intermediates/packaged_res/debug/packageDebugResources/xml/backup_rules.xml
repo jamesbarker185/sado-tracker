@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<full-backup-content>
-    <!-- TODO Remove the following file path from BOTH the backup and restore sections if you want to backup the files denoted by that path. -->
-    <exclude domain="database" path="sado_tracker.db" />
-</full-backup-content>

@@ -1,0 +1,269 @@
+package com.sadotracker.featureworkout
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.sadotracker.coreui.components.SadoButton
+import com.sadotracker.coreui.components.SadoCard
+import com.sadotracker.coreui.components.SadoTextField
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LiveWorkoutScreen(
+    onNavigateBack: () -> Unit,
+    onAddExercise: () -> Unit,
+    viewModel: LiveWorkoutViewModel = hiltViewModel()
+) {
+    val exercises by viewModel.exercises.collectAsState()
+    val allExercises by viewModel.allExercises.collectAsState()
+    val elapsedTimeSeconds by viewModel.elapsedTimeSeconds.collectAsState()
+
+    val minutes = elapsedTimeSeconds / 60
+    val seconds = elapsedTimeSeconds % 60
+    val timeStr = String.format("%02d:%02d", minutes, seconds)
+
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = {
+            Column(modifier = Modifier.padding(16.dp)) {
+                SadoButton(
+                    onClick = { viewModel.finishWorkout(onNavigateBack) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Finish Workout", style = MaterialTheme.typography.labelLarge)
+                }
+            }
+        }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Active Workout",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Text(
+                        text = timeStr,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            }
+
+            if (exercises.isEmpty()) {
+                item {
+                    Text(
+                        text = "No exercises yet. Normally this loads from Program or you add Ad-hoc.",
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                }
+            } else {
+                items(exercises.size) { exIndex ->
+                    val exState = exercises[exIndex]
+                    
+                    SadoCard(modifier = Modifier.fillMaxWidth()) {
+                        Column {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { viewModel.toggleExerciseExpansion(exIndex) },
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = exState.exercise.name,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Icon(
+                                    imageVector = if (exState.isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = if (exState.isExpanded) "Collapse" else "Expand",
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            
+                            AnimatedVisibility(
+                                visible = exState.isExpanded,
+                                enter = expandVertically(),
+                                exit = shrinkVertically()
+                            ) {
+                                Column {
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    
+                                    // Header Row
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = "SET",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.secondary,
+                                            modifier = Modifier.weight(0.15f),
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Text(
+                                            text = "PREVIOUS",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.secondary,
+                                            modifier = Modifier.weight(0.35f),
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Text(
+                                            text = "KG",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.secondary,
+                                            modifier = Modifier.weight(0.25f),
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Text(
+                                            text = "REPS",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.secondary,
+                                            modifier = Modifier.weight(0.25f),
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Spacer(modifier = Modifier.width(48.dp)) // space for action icon
+                                    }
+
+                                    exState.sets.forEachIndexed { setIndex, set ->
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = "${set.setNumber}",
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                color = MaterialTheme.colorScheme.secondary,
+                                                modifier = Modifier.weight(0.15f),
+                                                textAlign = TextAlign.Center
+                                            )
+                                            
+                                            Text(
+                                                text = set.previousTarget ?: "-",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.secondary,
+                                                modifier = Modifier.weight(0.35f),
+                                                textAlign = TextAlign.Center
+                                            )
+
+                                            if (set.isCompleted) {
+                                                Text(
+                                                    text = set.weightKg,
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    textAlign = TextAlign.Center,
+                                                    modifier = Modifier.weight(0.25f)
+                                                )
+                                                Text(
+                                                    text = set.reps,
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    textAlign = TextAlign.Center,
+                                                    modifier = Modifier.weight(0.25f)
+                                                )
+                                                IconButton(onClick = { /* Could allow edit */ }) {
+                                                    Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Completed", tint = MaterialTheme.colorScheme.primary)
+                                                }
+                                            } else {
+                                                SadoTextField(
+                                                    value = set.weightKg,
+                                                    onValueChange = { viewModel.updateSet(exIndex, setIndex, it, set.reps) },
+                                                    placeholder = "0",
+                                                    modifier = Modifier.weight(0.25f)
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                SadoTextField(
+                                                    value = set.reps,
+                                                    onValueChange = { viewModel.updateSet(exIndex, setIndex, set.weightKg, it) },
+                                                    placeholder = "0",
+                                                    modifier = Modifier.weight(0.25f)
+                                                )
+                                                IconButton(onClick = { viewModel.completeSet(exIndex, setIndex) }) {
+                                                    Icon(imageVector = Icons.Default.Check, contentDescription = "Complete", tint = MaterialTheme.colorScheme.onSurface)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    SadoButton(
+                                        onClick = { viewModel.addSet(exIndex) },
+                                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                                    ) {
+                                        Text("+ Add Set")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            item {
+                OutlinedButton(
+                    onClick = onAddExercise,
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 32.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Exercise")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Add Exercise")
+                }
+            }
+        }
+    }
+}

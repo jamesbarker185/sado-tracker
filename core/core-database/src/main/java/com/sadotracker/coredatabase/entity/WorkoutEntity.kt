@@ -21,5 +21,7 @@ data class WorkoutEntity(
     val date: Long,
     @ColumnInfo(name = "duration_ms") val durationMs: Long?,
     @ColumnInfo(name = "program_id") val programId: Long?,
+    @ColumnInfo(name = "mesocycle_id") val mesocycleId: Long? = null,
+    @ColumnInfo(name = "program_day_index") val programDayIndex: Int? = null,
     val notes: String?
 )
