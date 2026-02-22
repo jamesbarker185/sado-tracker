@@ -16,6 +16,9 @@ interface WorkoutDao {
     @Query("SELECT * FROM workouts WHERE id = :id")
     fun getById(id: Long): Flow<WorkoutEntity?>
 
+    @Query("SELECT * FROM workouts WHERE program_id = :programId ORDER BY date DESC")
+    fun getWorkoutsForProgram(programId: Long): Flow<List<WorkoutEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(workout: WorkoutEntity): Long
 

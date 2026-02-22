@@ -10,6 +10,7 @@ import com.sadotracker.coredatabase.dao.ProgramDao
 import com.sadotracker.coredatabase.dao.ProgramExerciseDao
 import com.sadotracker.coredatabase.dao.SetDao
 import com.sadotracker.coredatabase.dao.WorkoutDao
+import com.sadotracker.coredatabase.dao.ProgramDayDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,8 @@ object DatabaseModule {
         programDaoProvider: javax.inject.Provider<ProgramDao>,
         programExerciseDaoProvider: javax.inject.Provider<ProgramExerciseDao>,
         mesocycleDaoProvider: javax.inject.Provider<MesocycleDao>,
-        achievementDaoProvider: javax.inject.Provider<AchievementDao>
+        achievementDaoProvider: javax.inject.Provider<AchievementDao>,
+        programDayDaoProvider: javax.inject.Provider<ProgramDayDao>
     ): AppDatabase {
         return Room.databaseBuilder(
             context,
@@ -43,7 +45,8 @@ object DatabaseModule {
             programDaoProvider,
             programExerciseDaoProvider,
             mesocycleDaoProvider,
-            achievementDaoProvider
+            achievementDaoProvider,
+            programDayDaoProvider
         ))
         .build()
     }
@@ -68,4 +71,7 @@ object DatabaseModule {
 
     @Provides
     fun provideAchievementDao(appDatabase: AppDatabase): AchievementDao = appDatabase.achievementDao()
+
+    @Provides
+    fun provideProgramDayDao(appDatabase: AppDatabase): ProgramDayDao = appDatabase.programDayDao()
 }

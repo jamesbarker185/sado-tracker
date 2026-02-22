@@ -8,10 +8,12 @@ import com.sadotracker.coredatabase.dao.AchievementDao
 import com.sadotracker.coredatabase.dao.ExerciseDao
 import com.sadotracker.coredatabase.dao.MesocycleDao
 import com.sadotracker.coredatabase.dao.ProgramDao
+import com.sadotracker.coredatabase.dao.ProgramDayDao
 import com.sadotracker.coredatabase.dao.ProgramExerciseDao
 import com.sadotracker.coredatabase.entity.AchievementEntity
 import com.sadotracker.coredatabase.entity.ExerciseEntity
 import com.sadotracker.coredatabase.entity.MesocycleEntity
+import com.sadotracker.coredatabase.entity.ProgramDayEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -27,7 +29,8 @@ class AppDatabaseCallback(
     private val programDaoProvider: Provider<ProgramDao>,
     private val programExerciseDaoProvider: Provider<ProgramExerciseDao>,
     private val mesocycleDaoProvider: Provider<MesocycleDao>,
-    private val achievementDaoProvider: Provider<AchievementDao>
+    private val achievementDaoProvider: Provider<AchievementDao>,
+    private val programDayDaoProvider: Provider<ProgramDayDao>
 ) : RoomDatabase.Callback() {
 
     override fun onOpen(db: SupportSQLiteDatabase) {
@@ -153,9 +156,19 @@ class AppDatabaseCallback(
                 }
             }
 
+            // Seed all 7 days (including rest days)
+            val daysToInsert = (1..7).map { dayNumber ->
+                ProgramDayEntity(
+                    programId = programId,
+                    dayNumber = dayNumber,
+                    isRestDay = dayNumber == 7 // Day 7 is rest in this split
+                )
+            }
+            programDayDaoProvider.get().insertAll(daysToInsert)
+
             if (programExercises.isNotEmpty()) {
                 programExerciseDao.insertAll(programExercises)
-                Log.d("AppDatabaseCallback", "Successfully seeded starter program with ${programExercises.size} exercises.")
+                Log.d("AppDatabaseCallback", "Successfully seeded starter program with ${programExercises.size} exercises across ${daysToInsert.size} days.")
             }
             return programId
         } catch (e: Exception) {

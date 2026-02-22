@@ -1,8 +1,10 @@
 package com.sadotracker.featureprograms
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sadotracker.coredatabase.entity.ExerciseEntity
+import com.sadotracker.coredomain.usecase.GetProgramDetailsUseCase
 import com.sadotracker.coredomain.usecase.SaveProgramUseCase
 import com.sadotracker.coredomain.usecase.SearchExercisesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,14 +30,49 @@ data class FilterState(
     val equipment: List<String> = emptyList(),
     val modalities: List<String> = emptyList(),
     val muscleGroups: List<String> = emptyList(),
-    val primaryMuscles: List<String> = emptyList()
+    val primaryMuscles: List<String> = emptyList(),
+    val dayIndex: Int = 0 // Track which day we are adding exercises to
+)
+
+data class DayBuilderState(
+    val isRestDay: Boolean = false,
+    val exercises: List<ExerciseEntity> = emptyList(),
+    val isExpanded: Boolean = true
 )
 
 @HiltViewModel
 class ProgramBuilderViewModel @Inject constructor(
     private val searchExercisesUseCase: SearchExercisesUseCase,
-    private val saveProgramUseCase: SaveProgramUseCase
+    private val saveProgramUseCase: SaveProgramUseCase,
+    private val getProgramDetailsUseCase: GetProgramDetailsUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val programId: Long? = savedStateHandle.get<Long>("programId")
+
+    init {
+        programId?.let { id ->
+            if (id > 0) {
+                loadProgram(id)
+            }
+        }
+    }
+
+    private fun loadProgram(id: Long) {
+        viewModelScope.launch {
+            getProgramDetailsUseCase(id)?.let { details ->
+                _programName.value = details.program.name
+                _programDescription.value = details.program.description ?: ""
+                _days.value = details.days.map { dayDetails ->
+                    DayBuilderState(
+                        isRestDay = dayDetails.day.isRestDay,
+                        exercises = dayDetails.exercises,
+                        isExpanded = false
+                    )
+                }
+            }
+        }
+    }
 
     // --- Program Metadata State ---
     private val _programName = MutableStateFlow("")
@@ -42,9 +80,17 @@ class ProgramBuilderViewModel @Inject constructor(
 
     private val _programDescription = MutableStateFlow("")
     val programDescription = _programDescription.asStateFlow()
+    
+    // Day-based exercise state
+    private val _days = MutableStateFlow(listOf(DayBuilderState()))
+    val days = _days.asStateFlow()
 
-    private val _selectedExercises = MutableStateFlow<List<ExerciseEntity>>(emptyList())
-    val selectedExercises = _selectedExercises.asStateFlow()
+    // Composed state for UI convenience (e.g. for the "Save" button check)
+    val hasExercises = _days.combine(_days) { list, _ -> 
+        list.any { it.exercises.isNotEmpty() } || list.any { it.isRestDay }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    val isEditMode = programId != null
 
     // --- Search & Filter State ---
     private val _filterState = MutableStateFlow(FilterState())
@@ -131,31 +177,81 @@ class ProgramBuilderViewModel @Inject constructor(
         _filterState.value = FilterState(query = query)
     }
 
+    fun addDay() {
+        _days.update { it + DayBuilderState() }
+    }
+
+    fun removeDay(index: Int) {
+        _days.update { list ->
+            if (list.size > 1) list.filterIndexed { i, _ -> i != index } else list
+        }
+    }
+
+    fun toggleRestDay(index: Int) {
+        _days.update { list ->
+            val updated = list.toMutableList()
+            updated[index] = updated[index].copy(isRestDay = !updated[index].isRestDay)
+            updated
+        }
+    }
+
+    fun toggleDayExpansion(index: Int) {
+        _days.update { list ->
+            val updated = list.toMutableList()
+            updated[index] = updated[index].copy(isExpanded = !updated[index].isExpanded)
+            updated
+        }
+    }
+
+    fun setEditingDay(index: Int) {
+        _filterState.update { it.copy(dayIndex = index) }
+    }
+
     fun toggleExerciseSelection(exercise: ExerciseEntity) {
-        val current = _selectedExercises.value
-        if (current.any { it.id == exercise.id }) {
-            _selectedExercises.value = current.filter { it.id != exercise.id }
-        } else {
-            _selectedExercises.value = current + exercise
+        val dayIdx = _filterState.value.dayIndex
+        _days.update { list ->
+            val updatedList = list.toMutableList()
+            val day = updatedList[dayIdx]
+            val currentExercises = day.exercises
+            
+            val newExercises = if (currentExercises.any { it.id == exercise.id }) {
+                currentExercises.filter { it.id != exercise.id }
+            } else {
+                currentExercises + exercise
+            }
+            
+            updatedList[dayIdx] = day.copy(exercises = newExercises)
+            updatedList
         }
     }
     
-    fun removeExercise(exerciseId: Long) {
-        _selectedExercises.value = _selectedExercises.value.filter { it.id != exerciseId }
+    fun removeExercise(dayIndex: Int, exerciseId: Long) {
+        _days.update { list ->
+            val updatedList = list.toMutableList()
+            val day = updatedList[dayIndex]
+            updatedList[dayIndex] = day.copy(exercises = day.exercises.filter { it.id != exerciseId })
+            updatedList
+        }
     }
 
     fun saveProgram(onSuccess: (Long) -> Unit) {
         val name = _programName.value
         val description = _programDescription.value.takeIf { it.isNotBlank() }
-        val exercises = _selectedExercises.value
+        val daysData = _days.value
 
-        if (name.isBlank() || exercises.isEmpty()) return
+        if (name.isBlank() || daysData.isEmpty()) return
 
         viewModelScope.launch {
             val id = saveProgramUseCase(
                 name = name,
                 description = description,
-                exerciseIds = exercises.map { it.id }
+                days = daysData.map { day ->
+                    com.sadotracker.coredomain.usecase.SaveProgramUseCase.DayInput(
+                        isRestDay = day.isRestDay,
+                        exerciseIds = day.exercises.map { it.id }
+                    )
+                },
+                existingProgramId = programId
             )
             onSuccess(id)
         }

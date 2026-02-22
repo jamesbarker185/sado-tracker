@@ -56,6 +56,9 @@ object ProgramBuilderGraph
 data class ProgramListRoute(val forSelection: Boolean = false)
 
 @Serializable
+data class ProgramEditorFlow(val programId: Long? = null)
+
+@Serializable
 object ProgramCreationRoute
 
 @Serializable
@@ -167,7 +170,11 @@ fun SadoApp() {
                     
                     ExerciseSearchScreen(
                         onNavigateBack = {
-                            val selected = searchViewModel.selectedExercises.value
+                            val filter = searchViewModel.filterState.value
+                            val dayIdx = filter.dayIndex
+                            val days = searchViewModel.days.value
+                            val selected = days.getOrNull(dayIdx)?.exercises ?: emptyList()
+                            
                             if (selected.isNotEmpty()) {
                                 navController.previousBackStackEntry
                                     ?.savedStateHandle
@@ -195,36 +202,38 @@ fun SadoApp() {
             navigation<ProgramBuilderGraph>(startDestination = ProgramListRoute()) {
                 composable<ProgramListRoute> { backStackEntry ->
                     val route = backStackEntry.toRoute<ProgramListRoute>()
-                    ProgramListScreen(
-                        onNavigateBack = { navController.popBackStack() },
-                        onNavigateToCreateProgram = { navController.navigate(ProgramCreationRoute) },
-                        onProgramSelected = { id ->
-                            if (route.forSelection) {
-                                navController.previousBackStackEntry
-                                    ?.savedStateHandle
-                                    ?.set("selected_program_id", id)
-                                navController.popBackStack()
-                            } else {
-                                // TODO: Phase 2 Navigate to Program Detail
-                            }
+                ProgramListScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToCreateProgram = { navController.navigate(ProgramEditorFlow()) },
+                    onProgramSelected = { id ->
+                        if (route.forSelection) {
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("selected_program_id", id)
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(ProgramEditorFlow(programId = id))
                         }
-                    )
-                }
+                    }
+                )
+            }
+            
+            navigation<ProgramEditorFlow>(startDestination = ProgramCreationRoute) {
                 composable<ProgramCreationRoute> { backStackEntry ->
                     val parentEntry = remember(backStackEntry) {
-                        navController.getBackStackEntry(ProgramBuilderGraph)
+                        navController.getBackStackEntry<ProgramEditorFlow>()
                     }
                     val viewModel: ProgramBuilderViewModel = hiltViewModel(parentEntry)
                     
                     ProgramCreationScreen(
-                        onNavigateBack = { navController.navigateUp() },
+                        onNavigateBack = { navController.popBackStack<ProgramEditorFlow>(inclusive = true) },
                         onNavigateToExerciseSearch = { navController.navigate(ExerciseSearchRoute) },
                         viewModel = viewModel
                     )
                 }
                 composable<ExerciseSearchRoute> { backStackEntry ->
                     val parentEntry = remember(backStackEntry) {
-                        navController.getBackStackEntry(ProgramBuilderGraph)
+                        navController.getBackStackEntry<ProgramEditorFlow>()
                     }
                     val viewModel: ProgramBuilderViewModel = hiltViewModel(parentEntry)
                     
@@ -236,7 +245,7 @@ fun SadoApp() {
                 }
                 composable<ExerciseFilterRoute> { backStackEntry ->
                     val parentEntry = remember(backStackEntry) {
-                        navController.getBackStackEntry(ProgramBuilderGraph)
+                        navController.getBackStackEntry<ProgramEditorFlow>()
                     }
                     val viewModel: ProgramBuilderViewModel = hiltViewModel(parentEntry)
                     
@@ -246,6 +255,7 @@ fun SadoApp() {
                     )
                 }
             }
+        }
             
             composable<YouRoute> {
                 YouScreen()

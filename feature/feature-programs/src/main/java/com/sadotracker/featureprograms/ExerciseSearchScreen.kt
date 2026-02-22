@@ -49,8 +49,11 @@ fun ExerciseSearchScreen(
 ) {
     val searchResults by viewModel.searchResults.collectAsState()
     val filterState by viewModel.filterState.collectAsState()
-    val selectedExercises by viewModel.selectedExercises.collectAsState()
-    val selectedIds = selectedExercises.map { it.id }.toSet()
+    val days by viewModel.days.collectAsState()
+    
+    val currentDayIndex = filterState.dayIndex
+    val currentDayExercises = days.getOrNull(currentDayIndex)?.exercises ?: emptyList()
+    val selectedIds = currentDayExercises.map { it.id }.toSet()
     
     // Count active filters (excluding query)
     val activeFiltersCount = listOf(
@@ -71,7 +74,8 @@ fun ExerciseSearchScreen(
                     onClick = onNavigateBack,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Done Selecting (${selectedExercises.size})", style = MaterialTheme.typography.labelLarge)
+                    val count = currentDayExercises.size
+                    Text("Done Selecting ($count)", style = MaterialTheme.typography.labelLarge)
                 }
             }
         }

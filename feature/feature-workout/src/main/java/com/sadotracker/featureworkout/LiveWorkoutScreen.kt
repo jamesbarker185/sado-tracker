@@ -10,7 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -55,8 +60,9 @@ fun LiveWorkoutScreen(
     viewModel: LiveWorkoutViewModel = hiltViewModel()
 ) {
     val exercises by viewModel.exercises.collectAsState()
-    val allExercises by viewModel.allExercises.collectAsState()
     val elapsedTimeSeconds by viewModel.elapsedTimeSeconds.collectAsState()
+    val splitDays by viewModel.splitDays.collectAsState()
+    val currentDayIndex by viewModel.currentDayIndex.collectAsState()
 
     val minutes = elapsedTimeSeconds / 60
     val seconds = elapsedTimeSeconds % 60
@@ -98,6 +104,52 @@ fun LiveWorkoutScreen(
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
+                }
+            }
+
+            if (splitDays.isNotEmpty()) {
+                item {
+                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                        Text(
+                            text = "Split Progress",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            splitDays.forEachIndexed { index, day ->
+                                val isPastOrCurrent = currentDayIndex?.let { index <= it } ?: false
+                                
+                                val color = when {
+                                    day.isRestDay -> Color(0xFF4CAF50) // Green
+                                    isPastOrCurrent -> Color(0xFFFF9800) // Orange
+                                    else -> MaterialTheme.colorScheme.surfaceVariant // Grey
+                                }
+                                
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(32.dp)
+                                        .background(
+                                            color = color,
+                                            shape = RoundedCornerShape(4.dp)
+                                        )
+                                        .then(
+                                            if (index == currentDayIndex) {
+                                                Modifier.border(
+                                                    2.dp,
+                                                    MaterialTheme.colorScheme.primary,
+                                                    RoundedCornerShape(4.dp)
+                                                )
+                                            } else Modifier
+                                        )
+                                )
+                            }
+                        }
+                    }
                 }
             }
 

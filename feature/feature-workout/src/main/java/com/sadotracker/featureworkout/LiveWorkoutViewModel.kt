@@ -11,6 +11,8 @@ import com.sadotracker.coredomain.usecase.GetTargetForExerciseUseCase
 import com.sadotracker.coredomain.usecase.LogSetUseCase
 import com.sadotracker.coredatabase.dao.WorkoutDao
 import com.sadotracker.coredatabase.dao.ProgramExerciseDao
+import com.sadotracker.coredatabase.dao.ProgramDayDao
+import com.sadotracker.coredatabase.entity.ProgramDayEntity
 import kotlinx.coroutines.flow.firstOrNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -43,6 +45,7 @@ class LiveWorkoutViewModel @Inject constructor(
     private val exerciseDao: ExerciseDao,
     private val workoutDao: WorkoutDao,
     private val programExerciseDao: ProgramExerciseDao,
+    private val programDayDao: ProgramDayDao,
     private val getTargetForExerciseUseCase: GetTargetForExerciseUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -61,6 +64,12 @@ class LiveWorkoutViewModel @Inject constructor(
         initialValue = emptyList<ExerciseEntity>()
     )
     
+    private val _splitDays = MutableStateFlow<List<ProgramDayEntity>>(emptyList())
+    val splitDays = _splitDays.asStateFlow()
+
+    private val _currentDayIndex = MutableStateFlow<Int?>(null)
+    val currentDayIndex = _currentDayIndex.asStateFlow()
+    
     // For mock ad-hoc adding of exercises. In a real app we'd navigate to the exercise search.
     // For now we'll just query all exercises and grab one.
     
@@ -73,11 +82,20 @@ class LiveWorkoutViewModel @Inject constructor(
         viewModelScope.launch {
             val workout = workoutDao.getById(workoutId).firstOrNull() ?: return@launch
             val programId = workout.programId ?: return@launch
+            val dayIndex = workout.programDayIndex ?: 0
+            _currentDayIndex.value = dayIndex
             
+            // Load split days for progress bar
+            val days = programDayDao.getForProgram(programId).firstOrNull() ?: emptyList()
+            _splitDays.value = days
+
+            // Load exercises ONLY for the specific day index
             val programExercises = programExerciseDao.getExercisesForProgram(programId).firstOrNull() ?: return@launch
-            programExercises.forEach { progEx ->
-                addExercise(progEx.exerciseId, initiallyExpanded = false)
-            }
+            programExercises
+                .filter { it.dayIndex == dayIndex }
+                .forEach { progEx ->
+                    addExercise(progEx.exerciseId, initiallyExpanded = false)
+                }
         }
     }
     

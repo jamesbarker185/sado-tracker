@@ -9,6 +9,7 @@ import com.sadotracker.coredatabase.dao.ProgramDao
 import com.sadotracker.coredatabase.dao.ProgramExerciseDao
 import com.sadotracker.coredatabase.dao.SetDao
 import com.sadotracker.coredatabase.dao.WorkoutDao
+import com.sadotracker.coredatabase.dao.ProgramDayDao
 import com.sadotracker.coredatabase.entity.AchievementEntity
 import com.sadotracker.coredatabase.entity.ExerciseEntity
 import com.sadotracker.coredatabase.entity.MesocycleEntity
@@ -17,6 +18,7 @@ import com.sadotracker.coredatabase.entity.ProgramExerciseEntity
 import com.sadotracker.coredatabase.entity.RomProfileEntity
 import com.sadotracker.coredatabase.entity.SetEntity
 import com.sadotracker.coredatabase.entity.WorkoutEntity
+import com.sadotracker.coredatabase.entity.ProgramDayEntity
 
 @Database(
     entities = [
@@ -27,9 +29,10 @@ import com.sadotracker.coredatabase.entity.WorkoutEntity
         SetEntity::class,
         RomProfileEntity::class,
         MesocycleEntity::class,
-        AchievementEntity::class
+        AchievementEntity::class,
+        ProgramDayEntity::class
     ],
-    version = 2,
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -40,4 +43,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun setDao(): SetDao
     abstract fun mesocycleDao(): MesocycleDao
     abstract fun achievementDao(): AchievementDao
+    abstract fun programDayDao(): ProgramDayDao
 }
