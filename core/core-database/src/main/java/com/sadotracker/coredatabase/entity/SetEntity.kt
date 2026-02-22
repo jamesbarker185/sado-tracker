@@ -31,5 +31,6 @@ data class SetEntity(
     val reps: Int,
     val rir: Int?,
     @ColumnInfo(name = "is_partial", defaultValue = "0") val isPartial: Boolean = false,
-    @ColumnInfo(name = "rom_consistency_score") val romConsistencyScore: Double?
+    @ColumnInfo(name = "rom_consistency_score") val romConsistencyScore: Double?,
+    @ColumnInfo(name = "rest_taken_secs", defaultValue = "NULL") val restTakenSecs: Int? = null
 )

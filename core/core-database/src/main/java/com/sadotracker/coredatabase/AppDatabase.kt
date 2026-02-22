@@ -32,7 +32,7 @@ import com.sadotracker.coredatabase.entity.ProgramDayEntity
         AchievementEntity::class,
         ProgramDayEntity::class
     ],
-    version = 4,
+    version = 6,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

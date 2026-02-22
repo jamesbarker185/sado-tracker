@@ -37,6 +37,7 @@ data class FilterState(
 data class DayBuilderState(
     val isRestDay: Boolean = false,
     val exercises: List<ExerciseEntity> = emptyList(),
+    val restOverrides: Map<Long, Int> = emptyMap(),
     val isExpanded: Boolean = true
 )
 
@@ -67,6 +68,7 @@ class ProgramBuilderViewModel @Inject constructor(
                     DayBuilderState(
                         isRestDay = dayDetails.day.isRestDay,
                         exercises = dayDetails.exercises,
+                        restOverrides = dayDetails.restOverrides,
                         isExpanded = false
                     )
                 }
@@ -213,14 +215,17 @@ class ProgramBuilderViewModel @Inject constructor(
             val updatedList = list.toMutableList()
             val day = updatedList[dayIdx]
             val currentExercises = day.exercises
-            
+            val restOverrides = day.restOverrides.toMutableMap()
+
             val newExercises = if (currentExercises.any { it.id == exercise.id }) {
+                restOverrides.remove(exercise.id)
                 currentExercises.filter { it.id != exercise.id }
             } else {
+                restOverrides[exercise.id] = exercise.restTimeSecs
                 currentExercises + exercise
             }
-            
-            updatedList[dayIdx] = day.copy(exercises = newExercises)
+
+            updatedList[dayIdx] = day.copy(exercises = newExercises, restOverrides = restOverrides)
             updatedList
         }
     }
@@ -229,7 +234,23 @@ class ProgramBuilderViewModel @Inject constructor(
         _days.update { list ->
             val updatedList = list.toMutableList()
             val day = updatedList[dayIndex]
-            updatedList[dayIndex] = day.copy(exercises = day.exercises.filter { it.id != exerciseId })
+            val newRestOverrides = day.restOverrides.toMutableMap()
+            newRestOverrides.remove(exerciseId)
+            updatedList[dayIndex] = day.copy(
+                exercises = day.exercises.filter { it.id != exerciseId },
+                restOverrides = newRestOverrides
+            )
+            updatedList
+        }
+    }
+
+    fun updateExerciseRestTime(dayIndex: Int, exerciseId: Long, secs: Int) {
+        _days.update { list ->
+            val updatedList = list.toMutableList()
+            val day = updatedList[dayIndex]
+            val newRestOverrides = day.restOverrides.toMutableMap()
+            newRestOverrides[exerciseId] = secs.coerceAtLeast(30)
+            updatedList[dayIndex] = day.copy(restOverrides = newRestOverrides)
             updatedList
         }
     }
@@ -248,7 +269,8 @@ class ProgramBuilderViewModel @Inject constructor(
                 days = daysData.map { day ->
                     com.sadotracker.coredomain.usecase.SaveProgramUseCase.DayInput(
                         isRestDay = day.isRestDay,
-                        exerciseIds = day.exercises.map { it.id }
+                        exerciseIds = day.exercises.map { it.id },
+                        exerciseRestTimes = day.restOverrides
                     )
                 },
                 existingProgramId = programId

@@ -23,7 +23,8 @@ class GetProgramDetailsUseCase @Inject constructor(
 
     data class DayDetails(
         val day: ProgramDayEntity,
-        val exercises: List<ExerciseEntity>
+        val exercises: List<ExerciseEntity>,
+        val restOverrides: Map<Long, Int> = emptyMap()
     )
 
     suspend operator fun invoke(programId: Long): ProgramDetails? {
@@ -34,14 +35,14 @@ class GetProgramDetailsUseCase @Inject constructor(
         val exerciseCache = mutableMapOf<Long, ExerciseEntity>()
         
         val dayDetails = days.map { day ->
-            val dayExercises = exercises
-                .filter { it.dayIndex == day.dayNumber - 1 }
-                .map { progEx ->
-                    exerciseCache.getOrPut(progEx.exerciseId) {
-                        exerciseDao.getById(progEx.exerciseId)!!
-                    }
+            val dayProgramExercises = exercises.filter { it.dayIndex == day.dayNumber - 1 }
+            val dayExercises = dayProgramExercises.map { progEx ->
+                exerciseCache.getOrPut(progEx.exerciseId) {
+                    exerciseDao.getById(progEx.exerciseId)!!
                 }
-            DayDetails(day, dayExercises)
+            }
+            val restOverrides = dayProgramExercises.associate { it.exerciseId to it.restTimeSecs }
+            DayDetails(day, dayExercises, restOverrides)
         }
 
         return ProgramDetails(program, dayDetails)

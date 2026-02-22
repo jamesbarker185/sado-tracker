@@ -2,6 +2,8 @@ package com.sadotracker.coredatabase.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sadotracker.coredatabase.AppDatabase
 import com.sadotracker.coredatabase.dao.AchievementDao
 import com.sadotracker.coredatabase.dao.ExerciseDao
@@ -22,6 +24,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
+    private val MIGRATION_5_6 = object : Migration(5, 6) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE sets ADD COLUMN rest_taken_secs INTEGER DEFAULT NULL")
+        }
+    }
+
     @Provides
     @Singleton
     fun provideAppDatabase(
@@ -38,6 +46,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "sado_tracker.db"
         )
+        .addMigrations(MIGRATION_5_6)
         .fallbackToDestructiveMigration()
         .addCallback(com.sadotracker.coredatabase.AppDatabaseCallback(
             context,

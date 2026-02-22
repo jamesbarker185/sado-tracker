@@ -16,5 +16,6 @@ data class ExerciseSeedModel(
     @SerialName("force_vector") val forceVector: String,
     @SerialName("is_custom") val isCustom: Boolean = false,
     val instructions: String? = null,
-    @SerialName("image_res_id") val imageResId: String? = null
+    @SerialName("image_res_id") val imageResId: String? = null,
+    @SerialName("rest_time_seconds") val restTimeSecs: Int = 120
 )

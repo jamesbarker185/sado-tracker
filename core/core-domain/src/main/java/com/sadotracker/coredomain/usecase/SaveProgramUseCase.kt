@@ -13,7 +13,8 @@ class SaveProgramUseCase @Inject constructor(
 ) {
     data class DayInput(
         val isRestDay: Boolean,
-        val exerciseIds: List<Long>
+        val exerciseIds: List<Long>,
+        val exerciseRestTimes: Map<Long, Int> = emptyMap()
     )
 
     suspend operator fun invoke(
@@ -67,12 +68,14 @@ class SaveProgramUseCase @Inject constructor(
                 // 2. Insert exercises for this day if not a rest day
                 if (!dayInput.isRestDay) {
                     val programExercises = dayInput.exerciseIds.mapIndexed { index, exerciseId ->
+                        val defaultRest = database.exerciseDao().getById(exerciseId)?.restTimeSecs ?: 120
                         ProgramExerciseEntity(
                             programId = programId,
                             exerciseId = exerciseId,
                             orderIndex = index,
                             dayIndex = dayNumberZeroBased,
-                            defaultSets = 3
+                            defaultSets = 3,
+                            restTimeSecs = dayInput.exerciseRestTimes[exerciseId] ?: defaultRest
                         )
                     }
                     database.programExerciseDao().insertAll(programExercises)

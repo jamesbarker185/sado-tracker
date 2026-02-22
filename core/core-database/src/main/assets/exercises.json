@@ -10,7 +10,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Retract scapula, arch naturally, bar to lower chest, drive through heels."
+    "instructions": "Retract scapula, arch naturally, bar to lower chest, drive through heels.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Dumbbell Bench Press",
@@ -23,7 +24,8 @@
     "modality": "Unilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Keep forearms vertical, lower dumbbells to chest level, press up and slightly together."
+    "instructions": "Keep forearms vertical, lower dumbbells to chest level, press up and slightly together.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Incline Barbell Bench Press",
@@ -36,7 +38,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Set bench to 30-45 degrees, lower bar to upper chest, press up."
+    "instructions": "Set bench to 30-45 degrees, lower bar to upper chest, press up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Incline Dumbbell Bench Press",
@@ -49,7 +52,8 @@
     "modality": "Unilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Set bench to 30-45 degrees, lower dumbbells to upper chest, press up."
+    "instructions": "Set bench to 30-45 degrees, lower dumbbells to upper chest, press up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Decline Barbell Bench Press",
@@ -62,7 +66,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Secure feet, lower bar to lower chest, press up."
+    "instructions": "Secure feet, lower bar to lower chest, press up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Push-Up",
@@ -75,7 +80,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Keep body in a straight line, lower chest to floor, push up."
+    "instructions": "Keep body in a straight line, lower chest to floor, push up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Cable Crossover",
@@ -88,7 +94,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Slight bend in elbows, bring handles together in front of chest."
+    "instructions": "Slight bend in elbows, bring handles together in front of chest.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Pec Deck Fly",
@@ -101,7 +108,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Sit upright, bring pads or handles together in front of chest."
+    "instructions": "Sit upright, bring pads or handles together in front of chest.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Dumbbell Fly",
@@ -114,7 +122,8 @@
     "modality": "Unilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Lie on bench, slight bend in elbows, lower dumbbells to sides, bring back up in a hugging motion."
+    "instructions": "Lie on bench, slight bend in elbows, lower dumbbells to sides, bring back up in a hugging motion.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Barbell Squat",
@@ -127,7 +136,8 @@
     "modality": "Bilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Keep chest up and core braced. Break at the hips and knees simultaneously."
+    "instructions": "Keep chest up and core braced. Break at the hips and knees simultaneously.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Front Squat",
@@ -140,7 +150,8 @@
     "modality": "Bilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Rest bar on front deltoids, keep elbows high, squat down."
+    "instructions": "Rest bar on front deltoids, keep elbows high, squat down.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Leg Press",
@@ -153,7 +164,8 @@
     "modality": "Bilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Place feet shoulder-width apart on sled, lower until knees are 90 degrees, press up."
+    "instructions": "Place feet shoulder-width apart on sled, lower until knees are 90 degrees, press up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Bulgarian Split Squat",
@@ -166,7 +178,8 @@
     "modality": "Unilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Elevate rear foot on bench, lower hips until front thigh is parallel to floor, push back up."
+    "instructions": "Elevate rear foot on bench, lower hips until front thigh is parallel to floor, push back up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Walking Lunge",
@@ -179,7 +192,8 @@
     "modality": "Unilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Take a large step forward, lower hips until both knees are 90 degrees, push off front foot to step forward."
+    "instructions": "Take a large step forward, lower hips until both knees are 90 degrees, push off front foot to step forward.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Leg Extension",
@@ -192,7 +206,8 @@
     "modality": "Bilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Sit in machine, extend legs fully, lower under control."
+    "instructions": "Sit in machine, extend legs fully, lower under control.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Barbell Deadlift",
@@ -205,7 +220,8 @@
     "modality": "Bilateral",
     "force_vector": "Hip Dominant",
     "is_custom": false,
-    "instructions": "Maintain flat back, pull slack out of bar, drive through legs and extend hips."
+    "instructions": "Maintain flat back, pull slack out of bar, drive through legs and extend hips.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Romanian Deadlift",
@@ -218,7 +234,8 @@
     "modality": "Bilateral",
     "force_vector": "Hip Dominant",
     "is_custom": false,
-    "instructions": "Keep knees slightly bent, hinge at hips to lower bar along legs, squeeze glutes to return."
+    "instructions": "Keep knees slightly bent, hinge at hips to lower bar along legs, squeeze glutes to return.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Dumbbell Romanian Deadlift",
@@ -231,7 +248,8 @@
     "modality": "Unilateral",
     "force_vector": "Hip Dominant",
     "is_custom": false,
-    "instructions": "Hinge at hips pushing glutes back, keep dumbbells close to legs, stand up."
+    "instructions": "Hinge at hips pushing glutes back, keep dumbbells close to legs, stand up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Lying Leg Curl",
@@ -244,7 +262,8 @@
     "modality": "Bilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Lie face down, curl pad towards glutes, lower under control."
+    "instructions": "Lie face down, curl pad towards glutes, lower under control.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Seated Leg Curl",
@@ -257,7 +276,8 @@
     "modality": "Bilateral",
     "force_vector": "Knee Dominant",
     "is_custom": false,
-    "instructions": "Sit in machine, push pad down and back, return to start."
+    "instructions": "Sit in machine, push pad down and back, return to start.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Standing Calf Raise",
@@ -270,7 +290,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Stand with balls of feet on block, lower heels, press up onto toes."
+    "instructions": "Stand with balls of feet on block, lower heels, press up onto toes.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Seated Calf Raise",
@@ -283,7 +304,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Sit with pads on lower thighs, lift heels, lower under control."
+    "instructions": "Sit with pads on lower thighs, lift heels, lower under control.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Pull-Up",
@@ -296,7 +318,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Depress scapula, pull chest to bar, do not swing."
+    "instructions": "Depress scapula, pull chest to bar, do not swing.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Chin-Up",
@@ -309,7 +332,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Use supinated grip, pull chest to bar, squeeze biceps and lats."
+    "instructions": "Use supinated grip, pull chest to bar, squeeze biceps and lats.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Lat Pulldown",
@@ -322,7 +346,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Sit down, grasp wide bar, pull bar down towards upper chest."
+    "instructions": "Sit down, grasp wide bar, pull bar down towards upper chest.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Close-Grip Lat Pulldown",
@@ -335,7 +360,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Use V-handle, pull handle down to upper chest, squeeze lats."
+    "instructions": "Use V-handle, pull handle down to upper chest, squeeze lats.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Barbell Row",
@@ -348,7 +374,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Pull",
     "is_custom": false,
-    "instructions": "Hinge forward keeping back straight, pull bar to lower chest/upper abdomen."
+    "instructions": "Hinge forward keeping back straight, pull bar to lower chest/upper abdomen.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Dumbbell Row",
@@ -361,7 +388,8 @@
     "modality": "Unilateral",
     "force_vector": "Horizontal Pull",
     "is_custom": false,
-    "instructions": "Support body on bench, pull dumbbell to hip keeping elbow close to side."
+    "instructions": "Support body on bench, pull dumbbell to hip keeping elbow close to side.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Seated Cable Row",
@@ -374,7 +402,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Pull",
     "is_custom": false,
-    "instructions": "Sit with slight knee bend, pull handle to abdomen, retract scapula."
+    "instructions": "Sit with slight knee bend, pull handle to abdomen, retract scapula.",
+    "rest_time_seconds": 180
   },
   {
     "name": "T-Bar Row",
@@ -387,7 +416,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Pull",
     "is_custom": false,
-    "instructions": "Stand over bar, hinge at hips, pull handles to chest."
+    "instructions": "Stand over bar, hinge at hips, pull handles to chest.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Straight-Arm Pulldown",
@@ -400,7 +430,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Keep arms straight, pull bar down to thighs using lats."
+    "instructions": "Keep arms straight, pull bar down to thighs using lats.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Overhead Press",
@@ -413,7 +444,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Stand tall, brace core, press bar overhead until arms are locked."
+    "instructions": "Stand tall, brace core, press bar overhead until arms are locked.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Dumbbell Shoulder Press",
@@ -426,7 +458,8 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Sit on bench with back support, press dumbbells overhead."
+    "instructions": "Sit on bench with back support, press dumbbells overhead.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Arnold Press",
@@ -439,7 +472,8 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Start with palms facing you, rotate palms outward as you press up."
+    "instructions": "Start with palms facing you, rotate palms outward as you press up.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Lateral Raise",
@@ -452,7 +486,8 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Slight bend in elbows, raise dumbbells to sides until shoulder height."
+    "instructions": "Slight bend in elbows, raise dumbbells to sides until shoulder height.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Cable Lateral Raise",
@@ -465,7 +500,8 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Use fully lowered pulley, raise arm straight out to side."
+    "instructions": "Use fully lowered pulley, raise arm straight out to side.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Machine Shoulder Press",
@@ -478,7 +514,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Sit upright, press handles overhead, lower slowly."
+    "instructions": "Sit upright, press handles overhead, lower slowly.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Face Pull",
@@ -491,7 +528,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Pull",
     "is_custom": false,
-    "instructions": "Use rope attachment, pull towards face while externally rotating."
+    "instructions": "Use rope attachment, pull towards face while externally rotating.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Reverse Pec Deck",
@@ -504,7 +542,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Pull",
     "is_custom": false,
-    "instructions": "Sit facing pad, pull handles back and outward."
+    "instructions": "Sit facing pad, pull handles back and outward.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Barbell Shrug",
@@ -517,7 +556,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Hold barbell in front, elevate shoulders as high as possible."
+    "instructions": "Hold barbell in front, elevate shoulders as high as possible.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Dumbbell Shrug",
@@ -530,7 +570,8 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Hold dumbbells at sides, elevate shoulders straight up."
+    "instructions": "Hold dumbbells at sides, elevate shoulders straight up.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Barbell Curl",
@@ -543,7 +584,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Keep elbows fixed at sides, curl bar up towards chest."
+    "instructions": "Keep elbows fixed at sides, curl bar up towards chest.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Dumbbell Curl",
@@ -556,7 +598,8 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Curl one or both dumbbells while supinating wrists."
+    "instructions": "Curl one or both dumbbells while supinating wrists.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Hammer Curl",
@@ -569,7 +612,8 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Keep a neutral grip (palms facing in), curl dumbbells up."
+    "instructions": "Keep a neutral grip (palms facing in), curl dumbbells up.",
+    "rest_time_seconds": 60
   },
   {
     "name": "EZ-Bar Curl",
@@ -582,7 +626,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Use semi-supinated grip on EZ-bar, curl up."
+    "instructions": "Use semi-supinated grip on EZ-bar, curl up.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Cable Curl",
@@ -595,7 +640,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Pull",
     "is_custom": false,
-    "instructions": "Use straight bar attachment on low pulley, curl up smoothly."
+    "instructions": "Use straight bar attachment on low pulley, curl up smoothly.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Triceps Pushdown",
@@ -608,7 +654,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Use straight bar or rope, keep elbows pinned to sides, push down."
+    "instructions": "Use straight bar or rope, keep elbows pinned to sides, push down.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Overhead Triceps Extension",
@@ -621,7 +668,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Set pulley low or use dumbbell overhead, extend arms straight."
+    "instructions": "Set pulley low or use dumbbell overhead, extend arms straight.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Skullcrusher",
@@ -634,7 +682,8 @@
     "modality": "Bilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Lie on bench, lower EZ-bar to forehead, extend arms back up."
+    "instructions": "Lie on bench, lower EZ-bar to forehead, extend arms back up.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Close-Grip Bench Press",
@@ -647,7 +696,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Grip bar shoulder-width, lower to lower chest keeping elbows tucked."
+    "instructions": "Grip bar shoulder-width, lower to lower chest keeping elbows tucked.",
+    "rest_time_seconds": 180
   },
   {
     "name": "Crunch",
@@ -660,7 +710,8 @@
     "modality": "Bilateral",
     "force_vector": "Hip Dominant",
     "is_custom": false,
-    "instructions": "Lie on back, curl shoulders towards pelvis, squeeze abs."
+    "instructions": "Lie on back, curl shoulders towards pelvis, squeeze abs.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Plank",
@@ -673,7 +724,8 @@
     "modality": "Bilateral",
     "force_vector": "Horizontal Push",
     "is_custom": false,
-    "instructions": "Hold rigid pushup position on forearms, brace core tightly."
+    "instructions": "Hold rigid pushup position on forearms, brace core tightly.",
+    "rest_time_seconds": 60
   },
   {
     "name": "Hanging Leg Raise",
@@ -686,7 +738,8 @@
     "modality": "Bilateral",
     "force_vector": "Hip Dominant",
     "is_custom": false,
-    "instructions": "Hang from bar, raise straight legs to parallel or to the bar."
+    "instructions": "Hang from bar, raise straight legs to parallel or to the bar.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Cable Woodchopper",
@@ -699,7 +752,8 @@
     "modality": "Unilateral",
     "force_vector": "Horizontal Pull",
     "is_custom": false,
-    "instructions": "Pull cable diagonally across body twisting torso."
+    "instructions": "Pull cable diagonally across body twisting torso.",
+    "rest_time_seconds": 120
   },
   {
     "name": "Dumbbell Lateral Raise",
@@ -712,6 +766,7 @@
     "modality": "Unilateral",
     "force_vector": "Vertical Push",
     "is_custom": false,
-    "instructions": "Stand upright, raise dumbbells to the side until parallel to floor."
+    "instructions": "Stand upright, raise dumbbells to the side until parallel to floor.",
+    "rest_time_seconds": 60
   }
 ]

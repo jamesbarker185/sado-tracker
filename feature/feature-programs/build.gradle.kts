@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons.extended)
     implementation(libs.hilt.navigation.compose)
     implementation(project(":core:core-ui"))
     implementation(project(":core:core-domain"))

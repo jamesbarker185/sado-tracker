@@ -31,5 +31,6 @@ data class ProgramExerciseEntity(
     @ColumnInfo(name = "day_index", defaultValue = "0") val dayIndex: Int = 0,
     @ColumnInfo(name = "custom_rep_min") val customRepMin: Int? = null,
     @ColumnInfo(name = "custom_rep_max") val customRepMax: Int? = null,
-    @ColumnInfo(name = "weight_increment_kg", defaultValue = "2.5") val weightIncrementKg: Double = 2.5
+    @ColumnInfo(name = "weight_increment_kg", defaultValue = "2.5") val weightIncrementKg: Double = 2.5,
+    @ColumnInfo(name = "rest_time_secs", defaultValue = "120") val restTimeSecs: Int = 120
 )

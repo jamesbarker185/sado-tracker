@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,8 +19,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.animation.AnimatedVisibility
@@ -30,6 +33,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -60,6 +67,7 @@ fun LiveWorkoutScreen(
     viewModel: LiveWorkoutViewModel = hiltViewModel()
 ) {
     val exercises by viewModel.exercises.collectAsState()
+    val restTimerState by viewModel.restTimerState.collectAsState()
     val elapsedTimeSeconds by viewModel.elapsedTimeSeconds.collectAsState()
     val splitDays by viewModel.splitDays.collectAsState()
     val currentDayIndex by viewModel.currentDayIndex.collectAsState()
@@ -286,13 +294,31 @@ fun LiveWorkoutScreen(
                                                     placeholder = "0",
                                                     modifier = Modifier.weight(0.25f)
                                                 )
-                                                IconButton(onClick = { viewModel.completeSet(exIndex, setIndex) }) {
-                                                    Icon(imageVector = Icons.Default.Check, contentDescription = "Complete", tint = MaterialTheme.colorScheme.onSurface)
-                                                }
+                                                androidx.compose.material3.SuggestionChip(
+                                                    onClick = { viewModel.completeSet(exIndex, setIndex) },
+                                                    label = {
+                                                        val mins = exState.restTimeSecs / 60
+                                                        val secs = exState.restTimeSecs % 60
+                                                        Text("${mins}:${secs.toString().padStart(2, '0')}")
+                                                    }
+                                                )
                                             }
                                         }
                                     }
                                     
+                                    AnimatedVisibility(
+                                        visible = restTimerState.isActive && restTimerState.exerciseIndex == exIndex,
+                                        enter = expandVertically(),
+                                        exit = shrinkVertically()
+                                    ) {
+                                        RestTimerStrip(
+                                            state = restTimerState,
+                                            onPause = { viewModel.pauseRestTimer() },
+                                            onResume = { viewModel.resumeRestTimer() },
+                                            onStop = { viewModel.stopRestTimer() }
+                                        )
+                                    }
+
                                     SadoButton(
                                         onClick = { viewModel.addSet(exIndex) },
                                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
@@ -315,6 +341,80 @@ fun LiveWorkoutScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Add Exercise")
                 }
+            }
+        }
+    }
+}
+@Composable
+fun RestTimerStrip(
+    state: RestTimerState,
+    onPause: () -> Unit,
+    onResume: () -> Unit,
+    onStop: () -> Unit
+) {
+    val isOvertime = state.isOvertime
+    val isPaused = state.isPaused
+    val backgroundColor = when {
+        isOvertime -> Color(0xFFFFE082)
+        isPaused -> MaterialTheme.colorScheme.surfaceVariant
+        else -> MaterialTheme.colorScheme.primaryContainer
+    }
+    val contentColor = when {
+        isOvertime -> Color(0xFF5D4037)
+        isPaused -> MaterialTheme.colorScheme.onSurfaceVariant
+        else -> MaterialTheme.colorScheme.onPrimaryContainer
+    }
+
+    val displaySecs = if (isOvertime) state.elapsedSecs - state.targetSecs else state.targetSecs - state.elapsedSecs
+    val mins = displaySecs / 60
+    val secs = displaySecs % 60
+    val timeText = if (isOvertime) {
+        "+${mins}:${secs.toString().padStart(2, '0')}"
+    } else {
+        "${mins}:${secs.toString().padStart(2, '0')}"
+    }
+
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor,
+            contentColor = contentColor
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = { if (isPaused) onResume() else onPause() },
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
+                    contentDescription = if (isPaused) "Resume" else "Pause",
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            
+            Spacer(modifier = Modifier.width(8.dp))
+            
+            Text(
+                text = timeText,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+
+            IconButton(
+                onClick = onStop,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Stop,
+                    contentDescription = "Stop",
+                    modifier = Modifier.size(20.dp)
+                )
             }
         }
     }

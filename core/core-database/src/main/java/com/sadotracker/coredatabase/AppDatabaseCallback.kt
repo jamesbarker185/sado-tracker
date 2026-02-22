@@ -73,7 +73,8 @@ class AppDatabaseCallback(
                     forceVector = seed.forceVector,
                     isCustom = seed.isCustom,
                     instructions = seed.instructions,
-                    imageResId = seed.imageResId
+                    imageResId = seed.imageResId,
+                    restTimeSecs = seed.restTimeSecs
                 )
             }
             
@@ -105,9 +106,9 @@ class AppDatabaseCallback(
             val programId = programDao.insert(program)
             val exerciseDao = exerciseDaoProvider.get()
 
-            // Helper to find exercise ID by name
-            suspend fun findExerciseId(name: String): Long? {
-                return exerciseDao.getByName(name)?.id
+            // Helper to find exercise by name
+            suspend fun findExercise(name: String): com.sadotracker.coredatabase.entity.ExerciseEntity? {
+                return exerciseDao.getByName(name)
             }
 
             val programExercises = mutableListOf<com.sadotracker.coredatabase.entity.ProgramExerciseEntity>()
@@ -132,8 +133,8 @@ class AppDatabaseCallback(
 
             safePresetLayout.forEach { (dayIndex, exerciseNames) ->
                 exerciseNames.forEachIndexed { orderIndex, name ->
-                    val exId = findExerciseId(name)
-                    if (exId != null) {
+                    val exercise = findExercise(name)
+                    if (exercise != null) {
                         // Custom rep range for Lateral Raise
                         val customRepMin = if (name == "Lateral Raise") 15 else null
                         val customRepMax = if (name == "Lateral Raise") 20 else null
@@ -141,13 +142,14 @@ class AppDatabaseCallback(
                         programExercises.add(
                             com.sadotracker.coredatabase.entity.ProgramExerciseEntity(
                                 programId = programId,
-                                exerciseId = exId,
+                                exerciseId = exercise.id,
                                 orderIndex = orderIndex,
                                 dayIndex = dayIndex,
                                 defaultSets = 3,
                                 customRepMin = customRepMin,
                                 customRepMax = customRepMax,
-                                weightIncrementKg = 2.5
+                                weightIncrementKg = 2.5,
+                                restTimeSecs = exercise.restTimeSecs
                             )
                         )
                     } else {

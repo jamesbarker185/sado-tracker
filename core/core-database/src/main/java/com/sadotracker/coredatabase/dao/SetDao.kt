@@ -33,6 +33,9 @@ interface SetDao {
     @Update
     suspend fun update(setEntity: SetEntity)
 
+    @Query("UPDATE sets SET rest_taken_secs = :restTakenSecs WHERE id = :setId")
+    suspend fun updateRestDuration(setId: Long, restTakenSecs: Int)
+
     @Delete
     suspend fun delete(setEntity: SetEntity)
 }

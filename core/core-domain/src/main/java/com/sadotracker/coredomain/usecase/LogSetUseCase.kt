@@ -27,7 +27,8 @@ class LogSetUseCase @Inject constructor(
             reps = reps,
             rir = rir,
             isPartial = isPartial,
-            romConsistencyScore = null // Not used in Phase 1
+            romConsistencyScore = null, // Not used in Phase 1
+            restTakenSecs = null
         )
         return setDao.insert(newSet)
     }

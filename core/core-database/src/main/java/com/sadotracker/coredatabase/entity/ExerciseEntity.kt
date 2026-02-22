@@ -19,5 +19,6 @@ data class ExerciseEntity(
     @ColumnInfo(name = "force_vector") val forceVector: String,
     @ColumnInfo(name = "is_custom", defaultValue = "0") val isCustom: Boolean = false,
     val instructions: String?,
-    @ColumnInfo(name = "image_res_id") val imageResId: String?
+    @ColumnInfo(name = "image_res_id") val imageResId: String?,
+    @ColumnInfo(name = "rest_time_seconds", defaultValue = "120") val restTimeSecs: Int = 120
 )
